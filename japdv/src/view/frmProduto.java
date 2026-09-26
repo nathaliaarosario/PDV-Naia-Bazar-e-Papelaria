@@ -1,12 +1,14 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 //importar o FornecedorController (combo box)
@@ -24,10 +27,6 @@ import controller.ProdutoController;
 import model.Fornecedor;
 import model.Produto;
 import utils.Validador;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class frmProduto extends JDialog {
 
@@ -322,6 +321,8 @@ public class frmProduto extends JDialog {
 					produto.setEstoqueMinimo(Integer.parseInt(txtEstoque.getText().replace(",", ".")));
 					produto.setIdFornecedor(Integer.parseInt(txtIDFornecedor.getText()));
 
+					produto.setIdProduto(Integer.parseInt(txtIDProduto.getText()));
+
 					// enviar o objeto para o controller
 					controllerProduto.editarProduto(produto);
 
@@ -339,6 +340,43 @@ public class frmProduto extends JDialog {
 		getContentPane().add(btnEditarProduto);
 
 		JButton btnExcluirProduto = new JButton("Excluir");
+		btnExcluirProduto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				int idProdutos;
+
+				// Validação
+				if (txtBarcode.getText().isBlank()) {
+
+					JOptionPane.showMessageDialog(null, "Digite o código de barras");
+
+					txtBarcode.requestFocus();
+
+					return; // importante: para a execução aqui
+
+				} else {
+
+					// Capturar o ID do produto
+					idProdutos = Integer.parseInt(txtIDProduto.getText());
+				}
+
+				// Confirmação de exclusão
+				int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente apagar\neste Produto?", "Atenção!",
+						JOptionPane.YES_NO_OPTION);
+
+				if (resposta == JOptionPane.YES_OPTION) {
+
+					// Excluir através do controller
+					controllerProduto.excluir(idProdutos);
+
+					// Limpar os campos
+					limparCampos();
+
+					// Mensagem para o usuário
+					JOptionPane.showMessageDialog(null, "Produto apagado com sucesso.");
+				}
+			}
+		});
 		btnExcluirProduto.setBounds(387, 476, 89, 23);
 		getContentPane().add(btnExcluirProduto);
 
@@ -406,10 +444,15 @@ public class frmProduto extends JDialog {
 		lblProduto_1.setBounds(252, 48, 46, 14);
 		getContentPane().add(lblProduto_1);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(frmProduto.class.getResource("/img/lupa-arredondada.png")));
-		lblNewLabel.setBounds(597, 140, 16, 16);
-		getContentPane().add(lblNewLabel);
+		JButton btnNewButton = new JButton("");
+
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setIcon(new ImageIcon(frmProduto.class.getResource("/img/lupa-arredondada.png")));
+		btnNewButton.setBounds(596, 137, 38, 23);
+		getContentPane().add(btnNewButton);
 
 		// Centralizar
 		setLocationRelativeTo(null);

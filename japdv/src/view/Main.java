@@ -44,6 +44,7 @@ public class Main extends JFrame {
 	private JLabel lblMysql;
 	private JLabel lblDashQuantidade;
 	private JLabel lblDashRepor;
+	private JLabel lblDashSemEstoque;
 
 	/**
 	 * Launch the application.
@@ -338,7 +339,7 @@ public class Main extends JFrame {
 		lblEstoqueBaixo_1.setBounds(57, 18, 113, 19);
 		panelCard3.add(lblEstoqueBaixo_1);
 
-		JLabel lblDashSemEstoque = new JLabel("9");
+		lblDashSemEstoque = new JLabel("9");
 		lblDashSemEstoque.setForeground(new Color(213, 0, 0));
 		lblDashSemEstoque.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblDashSemEstoque.setBounds(42, 48, 46, 14);
@@ -441,8 +442,12 @@ public class Main extends JFrame {
 		lblDashQuantidade.setText(String.valueOf(totalProdutos));
 
 		// card produtos com estoque baixo
-		int estoqueBaixo = controllerProduto.contarProdutos();
+		int estoqueBaixo = controllerProduto.contarEstoqueBaixo();
 		lblDashRepor.setText(String.valueOf(estoqueBaixo));
+
+		// card produtos com estoque baixo
+		int estoqueZerado = controllerProduto.SemEstoque();
+		lblDashSemEstoque.setText(String.valueOf(estoqueZerado));
 
 	}
 

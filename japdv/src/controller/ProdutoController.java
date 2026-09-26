@@ -192,8 +192,8 @@ public class ProdutoController {
 					select p.codigoBarras, p.descricao, p.categoria, f.nome as fornecedor,
 					p.precoCusto, p.precoVenda, p.quantidade, p.estoqueMinimo
 					from produtos p
-					 inner join fornecedores f on p.idFornecedor = f.idFornecedor
-					 order by descricao;
+					inner join fornecedores f on p.idFornecedor = f.idFornecedor
+					order by descricao;
 					""";
 
 			// abrir a conexão com banco de dados
@@ -415,7 +415,7 @@ public class ProdutoController {
 			String sql = """
 					select count(*) as total
 					from produtos
-					where quantidade <= 0;
+					where quantidade = 0;
 						""";
 			// Abrir a conexão com o banco
 			Connection con = database.conectar();
@@ -445,6 +445,36 @@ public class ProdutoController {
 		}
 	}
 	// =========================================
-	
+
+	// =====================================
+	// CRUD Update - Excluir o Produto
+	// =====================================
+	public void excluir(int idProdutos) {
+		try {
+			String sql = """
+					delete from produtos
+					where idProdutos = ?
+					""";
+			// Abrir conexão com o banco
+			Connection con = database.conectar();
+
+			// Executar a query (instrução sql)
+			PreparedStatement stmt = con.prepareStatement(sql);
+
+			// setar o id do fornecedor (model)
+			stmt.setInt(1, idProdutos);
+
+			// Executar o delete
+			stmt.executeUpdate();
+
+			// Fechar as conexões
+			stmt.close();
+			con.close();
+
+		} catch (Exception e) {
+			System.out.println(e);
+
+		}
+	}// =========================================
 
 }
